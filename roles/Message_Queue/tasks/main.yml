@@ -1,0 +1,16 @@
+- name: installation Message Queue
+  apt:
+    name: rabbitmq-server
+    state: latest
+
+- name: Add the OpenStack user to RabbitMQ
+  become: yes
+  shell: sudo rabbitmqctl add_user openstack PANDA_PASS
+  ignore_errors: yes
+
+
+- name: permission to configure, write, and read access for the openstack user
+  shell:
+    rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
+

@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Ubuntu Update
+    tags: always
+    apt:
+      update_cache: yes
+      upgrade: dist
+    when: ansible_distribution == "ubuntu"
+
+
+- hosts: server1
+  become: true
+  roles:
+    - role: Etcd
+    - role: Memcached
+    - role: Message_Queue
+    - role: NTP
+    - role: OpenStack_Packages
+    - role: SQL_Database

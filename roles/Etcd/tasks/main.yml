@@ -1,0 +1,27 @@
+- name: Installation Etcd
+  apt:
+    name: etcd
+    state: latest
+
+- name: editing the /etc/default/etcd
+  lineinfile:
+    path: /etc/default/etcd
+    state: present
+    line: "{{item}}"
+  with_items:
+  - {regexp: "ETCD_INITIAL_CLUSTER",
+     line: 'ETCD_INITIAL_CLUSTER="controller=http://10.0.0.11:2380"'}
+  - {regexp: "ETCD_INITIAL_ADVERTISE_PEER_URLS",
+     line: 'ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.0.11:2380"'}
+  - {regexp: "ETCD_ADVERTISE_CLIENT_URLS",
+     line: 'ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.11:2379"'}
+  - {regexp: "ETCD_LISTEN_CLIENT_URLS",
+     line: 'ETCD_LISTEN_CLIENT_URLS="http://10.0.0.11:2379"'}
+
+- name: Etcd service enable
+  shell:
+    systemctl enable etcd
+
+- name: Etcd service restarted
+  shell:
+    systemctl restart etcd

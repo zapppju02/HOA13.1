@@ -1,0 +1,11 @@
+- name: installation Message Queue
+  shell:
+    name: rabbitmq-server
+    
+- name: add the Openstack user add
+  shell:
+    rabbitmqctl add_user johnglen zappju02
+
+- name: permission to configure, write, and read
+  shell:
+    rabbitmqctl set_permissions johnglen ".*" ".*" ".*"
